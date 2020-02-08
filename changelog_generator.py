@@ -29,22 +29,27 @@ dir_path = os.getcwd()
 dir_path += r"\p.ps1"
 dir_path = repr(dir_path)
 
+#For log
 pslogPath = os.getcwd()
 pslogPath += r"\PSlog.txt"
 pslogPath = repr(pslogPath)
 
 #create a powershell script in the current directory
 powershellScript = open("p.ps1", "w")
-
 #populate that file with the command to get the list of programs
 powershellScript.write("Get-ItemProperty HKLM:\\Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* | Select-Object DisplayName, DisplayVersion | Format-Table -AutoSize > " + pslogPath)
 #finished with the file, and we can't keep it open now or it will be in use when we try to execute it.
 powershellScript.close()
 
+#Get path to the above script
+psScriptpath = os.getcwd()
+psScriptpath += r'\p.ps1'
+#psScriptpath = repr(psScriptpath)
+
 #First generate a new up to date list of programs.
 #"C:\\Users\\elkel\\Desktop\\UtilScript\\p.ps1"
 p = subprocess.Popen(["powershell.exe",
-              pslogPath],
+              psScriptpath],
               stdout=sys.stdout)
 p.communicate()
 
